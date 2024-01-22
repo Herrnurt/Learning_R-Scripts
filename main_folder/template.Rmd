@@ -1,0 +1,860 @@
+
+---
+title: "Data Visualization and Data Technologies"
+output:
+  html_document:
+    toc: yes
+    code_folding: show
+    code_download: true
+---
+
+
+
+
+# Basics
+
+
+## Objectives
+
+Learn how to effecitvely use visualization for
+
+* exploring and understanding data
+* communicating and explaining insights
+
+Learn how to use data technologies for
+
+* acquiring data
+* cleaning data
+* organizing data
+
+Learn how to do this in ways that are
+
+* reproducible
+* reusable
+* shareable
+
+
+## Topics
+
+Data visualization
+
+* some history of visualization
+* learning the basic graph types
+* how to create basic graphs in R
+* human perception, and how it affects visualization
+* using understanding of perception to guide evaluation and design
+* dynamic and interactive visualizations
+
+Data technologies
+
+* basic data types
+* reshaping and transforming data
+* aggregating and summarizing data
+* merging several data sets
+* regular expressions for cleaning data
+* harvesting data from the web
+
+Reproducible research and collaboration
+
+* literate programming and data analysis
+* version control for collaboration
+
+<!-- ![](img/R4DS-data-science.png) -->
+
+
+## Recommended Text Books
+
+> Kieran Healy (2018) [_Data Visualization: A practical
+> introduction_](https://socviz.co/), Princeton
+
+> Paul Murrell (2009). [_Introduction to Data
+> Technologies_](http://www.stat.auckland.ac.nz/~paul/ItDT/), Chapman
+> & Hall/CRC.
+
+> Hadley Wickham, Mine Ã‡etinkaya-Rundel, and Garrett Grolemund (2023),
+> [_R for Data Science (2nd Edition)_](https://r4ds.hadley.nz/),
+> O'Reilly.
+
+> Claus O. Wilke (2019) [_Fundamentals of Data
+> Visualization_](https://clauswilke.com/dataviz/), Oâ€™Reilly,
+> Inc. ([Book source on
+> GitHub](https://github.com/clauswilke/dataviz); [supporting
+> materials on GitHub](https://github.com/clauswilke/dviz.supp))
+
+
+## Prerequisites
+
+An introductory statistics course.
+
+A regression course.
+
+Strongly recommended: Prior exposure to basic use of statistical
+programming software, such as R or SAS, as obtained from a regression
+course.
+
+
+## Assessment
+
+Quizzes
+
+* Short quizzes will be posted on **ICON** after most lectures.
+
+Homework
+
+* Homework assignments will be due approximately once a week.
+* You will typically submit your work by pushing it to your
+  GitLab repository by 5:00 PM on the due date.
+* Your homework solutions should be written as reports, using proper
+  sentences and paragraphs to present your results.
+
+Project
+
+* You will do a project developing a visual analysis of a data set
+  of your choosing.
+* You can work on your own or in a group of up to three students.
+* Your project should represent about 10 hours of work for each student.
+* A one page proposal for your project is due on Monday, March 20.
+* A final report on your project is due on Friday, May 5.
+* Your project may be shared with the class through the class web
+  page.
+
+Your grade will be based on quizzes (10%), homework (70%) and the
+project (20%).
+
+
+## Tools
+
+We will be using
+
+* [R](https://www.r-project.org) for computing and graphics
+* [R Markdown](https://rmarkdown.rstudio.com) for creating
+  reproducible reports.
+* [`git`](https://git-scm.com/) and the [UI
+  GitLab](https://research-git.uiowa.edu) service for revision control
+  and submitting work.
+
+You will need an editor or IDE; you can use
+
+* [RStudio](https://posit.co/products/open-source/rstudio/) for editing and more
+* any other editor or IDE
+
+To [access these tools](access.html) you can
+
+* use the [UI IDAS RStudio Notebook
+  Server](https://notebooks.hpc.uiowa.edu/spring2024-stat-4580-0001/hub/home),
+* use the CLAS Linux systems via the [FastX remote
+  desktop](https://fastx.divms.uiowa.edu),
+* or install your own on your computer
+
+For help installing your own a good place to start is
+<https://happygitwithr.com/>
+
+
+## First Steps: Do This Today!
+
+Visit the [UI GitLab site](https://research-git.uiowa.edu) at
+<https://research-git.uiowa.edu> and log in with your HawkID.
+
+Make sure you can access the UI IDAS Rstudio Notebook Server with
+your HawkID and password.
+
+* The server is available at
+
+  <https://notebooks.hpc.uiowa.edu/spring2024-stat-4580-0001/hub/home>.
+
+* If you cannot log into the RStudio server, please let your TA
+  or me know immediately.
+
+Make sure you are able to log into the CLAS Linux systems with your
+HawkID and password.
+
+* The easiest way is to use the
+  [FastX](https://fastx.divms.uiowa.edu) client at
+  <https://fastx.divms.uiowa.edu>.
+* If you cannot log into the CLAS workstations, please let your TA
+  or me know immediately.
+
+Look at the [brief introduction to git](`r WLNK("git.html")`) or the
+beginning of <https://happygitwithr.com> to see what `git` is about
+and how to get started with it.
+
+<!--
+* Working with the UI GitLab from RStudio or the command line will use
+  [SSH](https://en.wikipedia.org/wiki/Secure_Shell) communication. You
+  will need to do a few things to set this up:
+  
+    * Set up an SSH key by following [these
+      instructions](https://happygitwithr.com/ssh-keys.html). Alternate
+      instuctions are [available
+      here](https://wiki.uiowa.edu/display/githubdocs/Creating+SSH+Keys).
+      (For Linux follow the Mac instructions.)
+    * To use SSH to communicate with UI GitLab from off-campus you
+      will need to use a [VPN connection](https://its.uiowa.edu/vpn),
+-->
+
+Make sure you have access to R and try someting like this:
+
+```{r geyser, eval = FALSE}
+with(faithful,
+     plot(eruptions, waiting,
+          xlab = "Eruption time (min)",
+          ylab = "Waiting time to next eruption (min)"))
+```
+
+The result is a plot that looks like this:
+
+```{r, ref.label="geyser", echo=FALSE}
+```
+
+
+## Getting Set Up
+
+Log into the [UI GitLab site](https://research-git.uiowa.edu) at
+<https://research-git.uiowa.edu> to get your GitLab account
+activated.
+
+Decide where you want to work:
+
+* [UI IDAS RStudio Notebook
+  Server](https://notebooks.hpc.uiowa.edu/spring2024-stat-4580-0001/hub/home)
+* [FastX](https://linux.clas.uiowa.edu/help/fastx) for accessing
+  the CLAS Linux systems via the
+  [web interface](https://fastx.divms.uiowa.edu) or the 
+  [desktop client](https://linux.clas.uiowa.edu/help/fastx/desktop).
+* Your own computer.
+
+Setup needed for IDAS RStudio Server:
+
+* If you are registered then you should have an account
+  now. If you add the course late you should have an account
+  within a day.
+* [Introduce yourself to Git](https://happygitwithr.com/hello-git.html).
+
+Setup needed for CLAS Linux:
+
+* Install the [desktop
+   client](https://linux.clas.uiowa.edu/help/fastx/desktop) if you
+   want to use it. Otherwise, use the [web
+   interface](https://fastx.divms.uiowa.edu).
+* Your account will be set up automatically the first time you log in.
+* [Introduce yourself to Git](https://happygitwithr.com/hello-git.html).
+
+<!--
+* Set up an SSH key if you don't have one already.
+* Add your public SSH key to your UI GitHub account.
+-->
+
+Setting up your own computer: (A good resource for help with this is
+<https://happygitwithr.com>):
+
+* Install the current version of R.
+    * You might have older versions from other courses (e.g. from
+      [Anaconda](https://www.anaconda.com/)).
+    * You will need to add packages as we go along.
+
+* Install RStudio if you want to use it (highly recommended).
+
+* Install Git.
+
+* [Introduce yourself to Git](https://happygitwithr.com/hello-git.html).
+
+<!--
+    * Set up an SSH key if you don't have one already.
+    * Add you public SSH key to your UI GitHub account.
+-->
+
+Even if you decide to use your own computer you should make sure you can use
+the RStudio server or CLAS systems as a backup.
+
+<!--
+
+## Checking and Setting Up an SSH Key
+
+* Using RStudio: Check/create your key by going to **Tools** > **Global** >
+      **Options** > **GIT/SVN**.
+
+* From a shell command line: use `ssh-keygen`.
+
+* Open terminal or shell and do:
+    ```{bash, eval = FALSE}
+cat <filename>.pub
+    ```
+  and copy to the clipboard.
+
+* On the [UI GitLab web page](https://research-git.uiowa.edu) go to
+  `<your icon at right>` > **Settings** > **SSH Keys** and paste
+  in the public key.
+
+* Check that you can clone your repository
+
+    * RStudio: go to **File** > **New Project** > **Version Control** > **Git**.
+    * From a shell command line use `git clone`
+
+* On Linux and Mac OS you can avoid the need to type your pass phrase
+  many times by calling `ssh-add` in a shell. This should remember
+  your pass phrase until you log out.
+
+* In principle this is possible on Windows, but the setup is more
+complicated.  This
+[link](https://help.github.com/articles/working-with-ssh-key-passphrases/#platform-windows)
+provides some hints.
+-->
+
+
+# Some Examples
+
+
+## Life Expectancy in the Americas in 2007
+
+The data is from the [GapMinder](https://www.gapminder.org) project.
+
+```{r, message = FALSE, class.source = "fold-hide"}
+library(dplyr)
+library(ggplot2)
+library(gapminder)
+le_am_2007 <- filter(gapminder, year == 2007, continent == "Americas") %>%
+    mutate(country = reorder(country, lifeExp))
+knitr::kable(select(le_am_2007, country, lifeExp),
+             col.names = c("Country", "Life Expectancy (years)"),
+             digits = 1, format = "html") %>%
+    kableExtra::kable_styling(bootstrap_options = "striped",
+                              full_width = FALSE,
+                              font_size = 14) %>%
+    kableExtra::scroll_box(height = "300px", width = "75%")
+```
+
+A _dot plot_:
+
+```{r, message = FALSE, fig.height = 6, fig.width = 10, class.source = "fold-hide"}
+thm <- theme_minimal() + theme(text = element_text(size = 16))
+ggplot(le_am_2007, aes(y = country, x = lifeExp)) +
+    geom_point(fill = "lightblue") +
+    labs(x = "Life Expectancy (years)", y = NULL) +
+    thm + ggtitle("Dot Plot")
+```
+
+A _bar chart_:
+
+```{r, message = FALSE, fig.height = 6, fig.width = 10, class.source = "fold-hide"}
+ggplot(le_am_2007, aes(x = lifeExp, y = country)) +
+    geom_col(fill = "lightblue") +
+    labs(x = "Life Expectancy (years)", y = NULL) +
+    thm + ggtitle("Bar Chart")
+```
+
+Another (bad!)  _bar chart_:
+
+```{r, message = FALSE, fig.height = 6, fig.width = 10, class.source = "fold-hide"}
+baseline <- 60
+ticks <- c(0, 10, 20, 30)
+ggplot(le_am_2007, aes(x = lifeExp - baseline, y = country)) +
+    geom_col(fill = "lightblue") +
+    labs(x = "Life Expectancy (years)", y = NULL) +
+    scale_x_continuous(breaks = ticks, labels = ticks + baseline) +
+    thm + ggtitle("Another Bar Chart")
+```
+
+We will look at:
+
+* How to create these views using code that makes them easily reproducible.
+
+* How to assess their advantages and disadvantages as visual
+  representations of the data
+
+A data set with more variables for more countries and years is
+available in the `gapminder` R package.
+
+Data preparation steps:
+
+* _Filter_ the larger data set down to the countries and year we want.
+
+* _Select_ the country name and life expectancy variables.
+
+We will look at how to carry out these steps with reproducible code.
+
+
+## Yearly Snowfall in Iowa City
+
+<div id="ic-snowfall-example"></div>
+
+How did the winter of 2018/9 compare to other years?
+
+```{r snowfall, echo = FALSE, message = FALSE, warning = FALSE, fig.height = 6, fig.width = 10}
+```
+
+The data are available from a [NOAA web serice
+API](https://www.ncdc.noaa.gov/cdo-web/webservices/v2) as a
+[_CSV_](https://en.wikipedia.org/wiki/Comma-separated_values) file.
+
+```{r, echo = FALSE}
+head(select(ic_data_raw, year, month, element, starts_with("VALUE")))
+```
+
+Data preparation steps:
+
+* Read in the CSV file.
+
+* _Reshape_ the data to have columns `date`, `TMAX`, `TMIN`, `SNOW` and `PRCP`.
+
+* _Filter_ out bogus dates created by the original format.
+
+* _Convert_ units to more standard (American) ones (e.g. milimeters to inches).
+
+* ...
+
+Code is available [here](#ic-snowfall-example-code).
+
+
+## Internet Adoption Across the World
+
+<div id="internet-example"></div>
+
+An example from [Wilke (2019)](https://clauswilke.com/dataviz/) with
+[World Bank
+data](https://data.worldbank.org/indicator/IT.NET.USER.ZS).
+
+```{r internet-heatmap, echo = FALSE, fig.height = 6, fig.width = 10}
+```
+
+The data are available in several formats (CSV, XML, Excel).
+
+```{r, echo = FALSE}
+head(as_tibble(internet_raw))
+```
+
+Data preparation:
+
+* Read in the data.
+
+* _Filter_ down to the countries we want.
+
+* _Reshape_ to have columns `country`, `year`, and `users`. 
+
+* ...
+
+Code is available [here](#internet-example-code).
+
+
+## Iowa Wind Turbines
+
+Data is available from the [U.S. Wind Turbine
+Database](https://eerscmap.usgs.gov/uswtdb/).
+
+<!--
+For Wilke's example use data(wind_turbines, package = "dviz.supp").
+This uses more recent data from USGS.
+-->
+
+```{r, fig.height = 6, fig.width = 10, message = FALSE, class.source = "fold-hide"}
+library(sf)
+data(US_counties_geoms, package = "dviz.supp")
+wtfile <- "uswtdb_v6_1_20231128.csv.gz"
+if (! file.exists(wtfile))
+    download.file(paste0("https://stat.uiowa.edu/~luke/data/", wtfile), wtfile)
+wind_turbines <- read.csv(wtfile)
+
+sf_wt <- st_as_sf(wind_turbines, coords = c("xlong", "ylat"), crs = 4326)
+sf_wt_IA <- filter(sf_wt, t_state == "IA")
+sf_wt_IA <- mutate(sf_wt_IA,
+                   p_year = ifelse(p_year > 0, p_year, NA),
+                   year = cut(p_year,
+                              breaks = c(0, 2005, 2010, 2015, 2020, Inf),
+                              labels = c("before 2005", "2005-2009",
+                                         "2010-2014", "2015-2020",
+                                         "2021 and later"),
+                              right = FALSE))
+
+ggplot(filter(US_counties_geoms$lower48, STATEFP == 19)) +
+    geom_sf() +
+    geom_sf(data = sf_wt_IA, aes(fill = year),
+            shape = 21, color = "black", stroke = 0.25) +
+    scale_fill_viridis_d(direction = -1, na.value = "red") +
+    ggthemes::theme_map() +
+    ggtitle("A Map") +
+    theme(legend.background = element_rect(fill = "transparent"),
+          plot.title = element_text(size = 16))
+```
+
+There are two data sets:
+
+* _Shape_ information for drawing the map.
+
+* Data on individual wind turbines.
+
+Data preparation:
+
+* Read in the data.
+
+* Match up the _projection_ used for the map and location data.
+
+* ...
+
+
+## Iowa Population in 2010
+
+```{r, include = FALSE}
+## This is would be needed if we didn't have a library(sf) earlier so
+## that the filter operation does the right thing I think
+## loadNamespace("sf")
+```
+
+```{r, fig.height = 6, fig.width = 10, class.source = "fold-hide"}
+data(US_census, package = "dviz.supp")
+uscounties <- mutate(US_counties_geoms$lower48,
+                     FIPS = as.numeric(paste0(STATEFP, COUNTYFP)))
+uscounties <- left_join(uscounties,
+                        select(US_census, FIPS, pop2010),
+                        "FIPS")
+ggplot(filter(uscounties, STATEFP == 19)) +
+    geom_sf(aes(fill = pop2010)) +
+    scale_fill_viridis_c(direction = -1, trans = "log10",
+                         labels = scales::comma) +
+    ggtitle("A Choropleth Map") +
+    ggthemes::theme_map() +
+    theme(legend.background = element_rect(fill = "transparent"),
+          plot.title = element_text(size = 16))
+```
+
+Again there are two data sets:
+
+* Shape data for drawing the map.
+
+* County population data from the 2010 census.
+
+Data preparation:
+
+* ...
+
+* _Merge_ or _join_ the population data with the shape data.
+
+* ...
+
+
+# Reproducibility
+
+
+## Reproducible Reports and Analyses
+
+Preparing a report on a data analysis project usually involves
+
+* reading the data
+
+* _wrangling_ the data into usable form
+
+* visualizing, summarizing, and modeling
+
+* writing a report that includes your results
+
+To make your work reproducible for someone else, or for you when the
+data changes, it is best to use code for the entire workflow.
+
+[_R Markdown_](https://rmarkdown.rstudio.com/) is one technology that
+supports this.
+
+
+## Tools for Reproducibility
+
+R Markdown files contain report text along with code to produce
+numerical and graphical results.
+
+Tools are available to
+
+* convert an R Markdown file into a PDF or HTML report;
+
+* extract the code used to produce the computational and graphical results.
+
+```{r, include = FALSE}
+docwords <- if (using_xaringan) "These slides were" else "This page was"
+```
+`r docwords` generated from the R Markdown file [intro.Rmd](intro.Rmd).
+
+You will be creating R Markdown files like this for your homework and
+project.
+
+Some R Markdown tutorials:
+
+* [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+  by Yihui Xie is a book-length presentation.
+
+* The [R Markdown Home Page](https://rmarkdown.rstudio.com) has a link
+  to a [tutorial](https://rmarkdown.rstudio.com/lesson-1.html).
+
+
+# Code
+
+
+## Code for the [Iowa City Snowfall Example](#ic-snowfall-example)
+
+<div id="ic-snowfall-example-code"></div>
+
+Read the data:
+
+```{r snowfall-read, eval = FALSE}
+library(tidyverse)
+library(lubridate)
+if (! file.exists(here("ic_noaa.csv.gz")))
+    download.file("http://www.stat.uiowa.edu/~luke/data/ic_noaa.csv.gz",
+                  here("ic_noaa.csv.gz"))
+ic_data_raw <- as_tibble(read.csv(here("ic_noaa.csv.gz"), head = TRUE))
+```
+
+Reshape from (very) wide to (too) long:
+
+```{r snowfall-wide-to-long, eval = FALSE}
+ic_data <- select(ic_data_raw, year, month, element, starts_with("VALUE"))
+ic_data <- pivot_longer(ic_data,
+                        names_to = "day",
+                        values_to = "value", c(VALUE1 : VALUE31))
+```
+
+Extract the day as a number:
+
+```{r snowfall-extract-day, eval = FALSE}
+ic_data <- mutate(ic_data, day = as.integer(sub("VALUE", "", day)))
+```
+
+Reshape from too long to tidy with one row per day, keeping only the
+primary variables:
+
+```{r snowfall-long-to-tidy, eval = FALSE}
+corevars <- c("TMAX", "TMIN", "PRCP", "SNOW", "SNWD")
+ic_data <- filter(ic_data, element %in% corevars)
+ic_data <- pivot_wider(ic_data, names_from = "element", values_from = "value")
+```
+
+Add a date variable for plotting and to help get rid of bogus days:
+
+```{r snowfall-add-date, eval = FALSE}
+ic_data <- mutate(ic_data, date = lubridate::make_date(year, month, day))
+ic_data <- filter(ic_data, ! is.na(date))
+```
+
+Make units more standard (American):
+
+```{r snowfall-fix-units, eval = FALSE}
+mm2in <- function(x) x / 25.4
+C2F <- function(x) 32 + 1.8 * x
+ic_data <- transmute(ic_data, year, month, day, date,
+                     PRCP = mm2in(PRCP / 10),
+                     SNOW = mm2in(SNOW),
+                     SNWD = mm2in(SNWD),
+                     TMIN = C2F(TMIN / 10),
+                     TMAX = C2F(TMAX / 10))
+```
+
+Add a Month factor with abbreviated levels:
+
+```{r snowfall-add-month, eval = FALSE}
+ic_data <- mutate(ic_data,
+                  Month = lubridate::month(month, label = TRUE, abbr = TRUE))
+```
+
+Associate January through June with the winter starting in the previous year:
+
+```{r snowfall-wyear, eval = FALSE}
+ic_data <- mutate(ic_data, wyear = ifelse(month <= 6, year - 1, year))
+```
+
+Compute the winter totals and the total for the 2018/9 winter:
+
+```{r snowfall-winter-totals, eval = FALSE}
+ic_snow <- group_by(ic_data, wyear) %>%
+    summarize(snow = sum(SNOW, na.rm = TRUE))
+ic_snow_2018 <- filter(ic_snow, wyear == 2018)$snow
+```
+
+Create the histogram and show the 2018/9 total:
+
+```{r snowfall-histogram, eval = FALSE}
+ggplot(ic_snow) +
+    geom_histogram(aes(x = snow), bins = 15, fill = "grey", color = "black") +
+    geom_vline(xintercept = ic_snow_2018, color = "red", size = 2) +
+    scale_x_continuous(name = "Total Annual Snowfall (inches)",
+                       sec.axis = dup_axis(name = NULL,
+                                           breaks = ic_snow_2018,
+                                           labels = "2018/9")) +
+    scale_y_continuous(expand = expansion(0, 0)) +
+    ggtitle("A Histogram") +
+    theme_minimal() +
+    theme(text = element_text(size = 16))
+```
+
+<!-- ## nolint start -->
+```{r snowfall, eval = FALSE, echo = FALSE}
+library(lubridate)
+<<snowfall-read>>
+
+<<snowfall-wide-to-long>>
+
+<<snowfall-extract-day>>
+
+<<snowfall-long-to-tidy>>
+
+<<snowfall-add-date>>
+
+<<snowfall-fix-units>>
+
+<<snowfall-add-month>>
+
+<<snowfall-wyear>>
+
+<<snowfall-winter-totals>>
+
+<<snowfall-histogram>>
+```
+<!-- ## nolint end -->
+
+
+## Code for the [Internet Example](#internet-example)
+
+<div id="internet-example-code"></div>
+
+From
+[code](https://github.com/clauswilke/dataviz/blob/master/visualizing_amounts.Rmd)
+for the [_Visualizing amounts_
+chapter](https://clauswilke.com/dataviz/visualizing-amounts.html) in
+Claus Wilke's [Fundamentals of Data
+Visualization](https://clauswilke.com/dataviz/index.html).
+
+Reading in the data:
+
+```{r internet-heatmap-reading-data, eval = FALSE}
+base_url <- "http://api.worldbank.org/v2/en/indicator/"
+if (file.exists("internet.xls")) {
+    ## if we have to go with Excel
+    ## xls_url <- paste0(base_url, "IT.NET.USER.ZS?downloadformat=excel")
+    ## download.file(xls_url, "internet.xls")
+    internet_raw <- readxl::read_xls("internet.xls",
+                                     skip = 2, .name_repair = "universal")
+    names(internet_raw) <- sub("\\.\\.\\.", "X", names(internet_raw))
+} else {
+    csvfile <- here("internet.csv")
+    if (! file.exists(csvfile)) {
+        csv_url <- paste0(base_url, "IT.NET.USER.ZS?downloadformat=csv")
+        download.file(csv_url, "internet.zip")
+        unzip("internet.zip")
+        file.rename("API_IT.NET.USER.ZS_DS2_en_csv_v2_2255007.csv",
+                    csvfile)
+    }
+
+    internet_raw <- read.csv(csvfile, skip = 4)
+}
+```
+
+Reshape to longer format:
+
+```{r internet-heatmap-reshape, eval = FALSE}
+internet <- select(internet_raw, country = Country.Name, matches("X.+"))
+internet <- pivot_longer(internet, -country,
+                         names_to = "year", values_to = "users")
+internet <- mutate(internet, year = as.integer(sub("X", "", year)))
+```
+
+Select some countries to include in the plot:
+
+```{r internet-heatmap-select-countries, eval = FALSE}
+country_list <- c("United States", "China", "India", "Japan", "Algeria",
+                  "Brazil", "Germany", "France", "United Kingdom", "Italy",
+                  "New Zealand", "Canada", "Mexico", "Chile", "Argentina",
+                  "Norway", "South Africa", "Kenya", "Israel", "Iceland")
+
+internet_short <- filter(internet, country %in% country_list)
+## internet_short <- mutate(internet_short,
+##                          users = ifelse(is.na(users), 0, users))
+```
+
+Get ordering by 2017 levels:
+
+```{r internet-heatmap-2017-levels, eval = FALSE}
+intr17 <- filter(internet_short, year == 2017)
+levs <- arrange(intr17, users)$country
+```
+
+The basic plot:
+
+```{r, internet-heatmap-basic-plot, eval = FALSE}
+p_inet <- ggplot(filter(internet_short, year > 1993),
+                 aes(x = year,
+                     y = factor(country, levs),
+                     fill = users)) +
+    geom_tile(color = "white", size = 0.25)
+```
+
+Adjust color palette and guide:
+
+```{r internet-heatmap-fill-color, eval = FALSE}
+p_inet <- p_inet +
+    scale_fill_viridis_c(
+        option = "A", begin = 0.05, end = 0.98,
+        limits = c(0, 100),
+        name = "internet users / 100 people",
+        guide = guide_colorbar(
+            direction = "horizontal",
+            label.position = "bottom",
+            title.position = "top",
+            ticks = FALSE,
+            barwidth = grid::unit(3.5, "in"),
+            barheight = grid::unit(0.2, "in"),
+            order = 1))
+```
+
+Adjust `x` and `y` scales:
+
+```{r internet-heatmap-x-y-scales, eval = FALSE}
+p_inet <- p_inet +
+    scale_x_continuous(expand = c(0, 0), name = NULL) +
+    scale_y_discrete(name = NULL, position = "right")
+```
+
+Add layer for `NA` values:
+
+```{r internet-heatmap-NA-layer, eval = FALSE}
+p_inet <- p_inet +
+    ggnewscale::new_scale_fill() +
+    geom_tile(data = filter(internet_short, year > 1993, is.na(users)),
+              aes(fill = "NA"), color = "white") +
+    scale_fill_manual(values = "grey50") +
+    guides(fill = guide_legend(title = "",
+                               label.position = "bottom",
+                               title.position = "top",
+                               keyheight = grid::unit(0.2, "in"),
+                               keywidth = grid::unit(0.2, "in"),
+                               order = 2))
+```
+
+Final plot with title and theme adjustments:
+
+```{r internet-heatmap-finalplot, eval = FALSE}
+p_inet +
+    ggtitle("A Heat Map",
+            "Countries ordered by percent internet users in 2017.") +
+    theme(text = element_text(size = 16)) +
+    theme(axis.line = element_blank(),
+          axis.ticks = element_blank(),
+          axis.ticks.length = grid::unit(1, "pt"),
+          legend.position = "top",
+          legend.justification = "left",
+          legend.title.align = 0.5,
+          legend.title = element_text(size = 12 * 12 / 14)
+          )
+```
+
+```{r internet-heatmap, eval = FALSE, echo = FALSE}
+<<internet-heatmap-reading-data>>
+
+<<internet-heatmap-reshape>>
+
+<<internet-heatmap-select-countries>>
+
+<<internet-heatmap-2017-levels>>
+
+<<internet-heatmap-basic-plot>>
+
+<<internet-heatmap-fill-color>>
+
+<<internet-heatmap-x-y-scales>>
+
+<<internet-heatmap-NA-layer>>
+
+<<internet-heatmap-finalplot>>
+```
